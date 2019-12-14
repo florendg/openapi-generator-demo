@@ -1,0 +1,33 @@
+openapi:  "3.0.2"
+info:
+  version: 1.0.0
+  title: Demo API
+  description: Dit is een test van openapi
+paths:
+  /sayHello:
+    get:
+      description: Simple Greeting
+      responses:
+        "200":
+          description: The Default Answer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/personType'
+
+
+components:
+  schemas:
+    personType:
+      description: Describes a person
+      required:
+        - firstname
+        - lastname
+      properties:
+        firstname:
+          description: Given name of the person.
+          type: string
+        lastname:
+          description: Last name of the person.
+          type: string
+

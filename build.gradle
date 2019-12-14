@@ -1,0 +1,58 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.openapitools:openapi-generator-gradle-plugin:4.2.2"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'org.openapi.generator'
+
+group 'dev.weirdcat.api'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+task buildJaxRSSpecInterface(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
+    generatorName = "jaxrs-spec"
+    inputSpec = "$rootDir/specs/hello-v1.0.yaml".toString()
+    outputDir = "$buildDir/generated/jaxrs-spec".toString()
+    apiPackage = "dev.weirdcat.hello.api"
+    invokerPackage = "dev.weirdcat.hello.invoker"
+    modelPackage = "dev.weirdcat.hello.model"
+    groupId = "dev.weirdcat"
+    id = "demo-api"
+    version = "1.0.0-SNAPSHOT"
+    configOptions = [
+            interfaceOnly: "true",
+            useSwaggerAnnotations: "false",
+            dateLibrary: "java8"
+    ]
+}
+
+task buildDocumentation(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
+    generatorName = "html"
+    inputSpec = "$rootDir/specs/hello-v1.0.yaml".toString()
+    outputDir = "$buildDir/generated/doc".toString()
+    apiPackage = "dev.weirdcat.hello.api"
+    invokerPackage = "dev.weirdcat.hello.invoker"
+    modelPackage = "dev.weirdcat.hello.model"
+    groupId = "dev.weirdcat"
+    id = "demo-api"
+    version = "1.0.0-SNAPSHOT"
+    configOptions = [
+            dateLibrary: "java8"
+    ]
+}
+
+task codegen(dependsOn: [
+        'buildJaxRSSpecInterface',
+        'buildDocumentation'
+])
+
